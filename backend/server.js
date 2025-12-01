@@ -7,7 +7,7 @@ dotenv.config();
 const app = express();
 const PORT = 4000;
 
-app.use(cors());  // <-- habilita CORS para todas las rutas
+app.use(cors()); // <-- habilita CORS para todas las rutas
 
 app.get("/api/movies/search", async (req, res) => {
   const query = req.query.q;
@@ -22,3 +22,17 @@ app.get("/api/movies/search", async (req, res) => {
 });
 
 app.listen(PORT, () => console.log(`Backend corriendo en puerto ${PORT}`));
+
+import { getWatchProviders } from "./services/tmdbService.js";
+
+app.get("/api/movies/:id/providers", async (req, res) => {
+  const { id } = req.params;
+  const { type = "movie" } = req.query; // 'movie' o 'tv'
+
+  try {
+    const providers = await getWatchProviders(id, type);
+    res.json(providers);
+  } catch (err) {
+    res.status(500).json({ error: "Error al obtener plataformas" });
+  }
+});

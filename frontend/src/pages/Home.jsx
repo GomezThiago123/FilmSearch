@@ -19,7 +19,7 @@ export default function Home() {
       setError("");
     } catch (err) {
       console.error(err);
-      setError("Error al buscar películas. Revisa tu backend/API.");
+      setError("Error al buscar películas.");
       setResults([]);
     }
   };
@@ -33,7 +33,7 @@ export default function Home() {
           type="text"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          placeholder="Buscar película o serie..."
+          placeholder="Buscar película..."
           style={{ padding: "10px", width: "300px" }}
         />
         <button type="submit" style={{ padding: "10px", marginLeft: "5px" }}>
@@ -48,7 +48,7 @@ export default function Home() {
           display: "grid",
           gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))",
           gap: "15px",
-          justifyItems: "center",
+          justifyItems: "center"
         }}
       >
         {results.map((movie) => (

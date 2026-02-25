@@ -1,15 +1,21 @@
 from flask import Flask
-from movies_controller import movies_blueprint
-from dotenv import load_dotenv
 from flask_cors import CORS
+from dotenv import load_dotenv
 import os
+
+# Importar rutas
+from routes.movies_routes import movies_bp
+from routes.platforms_routes import platforms_bp
+from routes.genres_routes import genres_bp
 
 load_dotenv()
 app = Flask(__name__)
 CORS(app)
 
-# todas las rutas de películas
-app.register_blueprint(movies_blueprint, url_prefix="/api/movies")
+# Registrar blueprints
+app.register_blueprint(movies_bp, url_prefix="/api/movies")
+app.register_blueprint(platforms_bp, url_prefix="/api/platforms")
+app.register_blueprint(genres_bp, url_prefix="/api/genres")
 
 if __name__ == "__main__":
     port = int(os.getenv("PORT", 4000))

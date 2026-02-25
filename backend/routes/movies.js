@@ -7,7 +7,7 @@ import {
 
 const router = express.Router();
 
-// 🔹 rutas
+// rutas
 router.get("/search", searchMovie);          // /api/movies/search?q=batman
 router.get("/:id", getMovieById);            // /api/movies/550
 router.get("/:id/providers", getMovieProviders); // /api/movies/550/providers

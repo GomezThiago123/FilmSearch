@@ -5,7 +5,7 @@ dotenv.config();
 const API_KEY = process.env.TMDB_API_KEY;
 const BASE_URL = "https://api.themoviedb.org/3";
 
-// 🔹 Obtener plataformas de streaming
+// Obtener plataformas de streaming
 export async function getWatchProviders(id, type = "movie") {
   try {
     const { data } = await axios.get(

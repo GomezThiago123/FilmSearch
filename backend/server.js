@@ -13,4 +13,4 @@ app.use(express.json());
 //  todas las rutas de películas
 app.use("/api/movies", moviesRoutes);
 
-app.listen(PORT, () => console.log(`✅ Servidor corriendo en puerto ${PORT}`));
+app.listen(PORT, () => console.log(`Servidor corriendo en puerto ${PORT}`));

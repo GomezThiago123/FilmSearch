@@ -1,0 +1,8 @@
+python3 -m venv venv
+source venv/bin/activate
+
+pip install flask requests python-dotenv flask-cors pytest
+
+python app.py
+
+pytest -v

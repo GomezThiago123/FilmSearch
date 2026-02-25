@@ -1,9 +1,15 @@
 import express from "express";
-import { searchMovie, getMovieById } from "../controllers/moviesController.js";
+import {
+  searchMovie,
+  getMovieById,
+  getMovieProviders,
+} from "../controllers/moviesController.js";
 
 const router = express.Router();
 
-router.get("/search", searchMovie);
-router.get("/:id", getMovieById); // 👈 PARA /api/movies/50
+// 🔹 rutas
+router.get("/search", searchMovie);          // /api/movies/search?q=batman
+router.get("/:id", getMovieById);            // /api/movies/550
+router.get("/:id/providers", getMovieProviders); // /api/movies/550/providers
 
 export default router;

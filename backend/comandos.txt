@@ -1,3 +1,5 @@
+EXPRESS:
+
 python3 -m venv venv
 source venv/bin/activate
 
@@ -6,3 +8,24 @@ pip install flask requests python-dotenv flask-cors pytest
 python app.py
 
 pytest -v
+----------------------------------------------------------
+PYTHON(ACTUAL):
+
+python3 -m venv venv
+
+En Linux / Mac:
+source venv/bin/activate
+
+En Windows:
+venv\Scripts\activate
+
+pip install flask flask-cors requests python-dotenv
+¿Qué hace cada una?
+
+flask → servidor backend
+
+flask-cors → permite que React (frontend) pueda hacer peticiones
+
+requests → para llamar a la API de TMDB
+
+python-dotenv → para leer tu .env con la API key

@@ -3,13 +3,15 @@ DESCRIPCIÓN GENERAL
 Este proyecto implementa una API REST para consultar información sobre películas,
 géneros y plataformas de streaming.
 
-Se desarrolló una suite de 20 tests automatizados utilizando Pytest con el objetivo de:
+Se desarrolló una suite completa de tests automatizados utilizando Pytest con el objetivo de:
 
 - Verificar que los endpoints funcionen correctamente
 - Validar la estructura de las respuestas JSON
 - Confirmar que los tipos de datos sean correctos
 - Probar manejo de errores
 - Asegurar consistencia en las relaciones entre entidades
+- Validar seguridad básica (métodos HTTP no permitidos)
+- Garantizar que todas las respuestas sean JSON válidas
 
 
 ------------------------------------------------------------
@@ -89,6 +91,51 @@ TESTS DE PLATAFORMAS
 
 
 ------------------------------------------------------------
+TESTS DE MANEJO DE ERRORES
+------------------------------------------------------------
+
+21. test_invalid_movie_id_format
+    Verifica que IDs con formato inválido sean manejados correctamente.
+
+22. test_invalid_platform_id_format
+    Valida el manejo de IDs incorrectos en plataformas.
+
+23. test_search_empty_query
+    Comprueba comportamiento ante búsqueda con parámetro vacío.
+
+24. test_nonexistent_route
+    Asegura que rutas inexistentes devuelvan 404.
+
+25. test_wrong_http_method
+    Valida comportamiento ante método HTTP incorrecto.
+
+
+------------------------------------------------------------
+TESTS DE SEGURIDAD BÁSICA
+------------------------------------------------------------
+
+26. test_post_not_allowed
+    Verifica que endpoints GET no acepten POST.
+
+27. test_put_not_allowed
+    Verifica que endpoints no acepten PUT.
+
+28. test_delete_not_allowed
+    Confirma que DELETE no esté permitido donde no corresponde.
+
+
+------------------------------------------------------------
+TESTS DE FORMATO DE RESPUESTA
+------------------------------------------------------------
+
+29. test_response_content_type_json
+    Asegura que todos los endpoints devuelvan application/json.
+
+30. test_response_is_valid_json
+    Verifica que las respuestas puedan convertirse correctamente a JSON.
+
+
+------------------------------------------------------------
 CONCLUSIÓN
 
 La suite de tests garantiza que la API:
@@ -97,7 +144,9 @@ La suite de tests garantiza que la API:
 - Maneja errores adecuadamente
 - Devuelve datos con tipos correctos
 - Soporta relaciones entre recursos
+- Rechaza métodos HTTP no permitidos
+- Responde siempre en formato JSON válido
 - Funciona correctamente ante diferentes escenarios
 
 Estos tests permiten detectar errores rápidamente si el backend es modificado
-en el futuro.
+en el futuro y elevan el proyecto a un nivel profesional de testing.

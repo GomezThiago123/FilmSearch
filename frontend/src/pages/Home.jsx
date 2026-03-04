@@ -12,14 +12,32 @@ export default function Home() {
     if (!query) return;
 
     try {
-      const res = await axios.get(
+      // Buscar películas
+      const moviesRes = await axios.get(
         `http://localhost:4000/api/movies/search?q=${query}`
       );
-      setResults(res.data.results);
+
+      // Buscar series
+      const seriesRes = await axios.get(
+        `http://localhost:4000/api/series/search?query=${query}`
+      );
+
+      // Unir resultados
+      const movies = moviesRes.data.results.map((m) => ({
+        ...m,
+        media_type: "movie",
+      }));
+
+      const series = seriesRes.data.results.map((s) => ({
+        ...s,
+        media_type: "tv",
+      }));
+
+      setResults([...movies, ...series]);
       setError("");
     } catch (err) {
       console.error(err);
-      setError("Error al buscar películas.");
+      setError("Error al buscar contenido.");
       setResults([]);
     }
   };
@@ -33,7 +51,7 @@ export default function Home() {
           type="text"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          placeholder="Buscar película..."
+          placeholder="Buscar película o serie..."
           style={{ padding: "10px", width: "300px" }}
         />
         <button type="submit" style={{ padding: "10px", marginLeft: "5px" }}>
@@ -51,8 +69,8 @@ export default function Home() {
           justifyItems: "center"
         }}
       >
-        {results.map((movie) => (
-          <MovieCard key={movie.id} movie={movie} />
+        {results.map((item) => (
+          <MovieCard key={item.id} movie={item} />
         ))}
       </div>
     </div>

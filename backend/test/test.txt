@@ -1,0 +1,103 @@
+DESCRIPCIÓN GENERAL
+
+Este proyecto implementa una API REST para consultar información sobre películas,
+géneros y plataformas de streaming.
+
+Se desarrolló una suite de 20 tests automatizados utilizando Pytest con el objetivo de:
+
+- Verificar que los endpoints funcionen correctamente
+- Validar la estructura de las respuestas JSON
+- Confirmar que los tipos de datos sean correctos
+- Probar manejo de errores
+- Asegurar consistencia en las relaciones entre entidades
+
+
+------------------------------------------------------------
+TESTS DE GÉNEROS
+------------------------------------------------------------
+
+1. test_get_genres
+   Verifica que el endpoint /api/genres/ responda correctamente
+   y devuelva una lista de géneros.
+
+2. test_genres_structure
+   Comprueba que cada género tenga las claves "id" y "name".
+
+3. test_genres_not_empty
+   Valida que la lista de géneros no esté vacía.
+
+4. test_genre_id_is_integer
+   Confirma que el id del género sea un número entero.
+
+
+------------------------------------------------------------
+TESTS DE PELÍCULAS
+------------------------------------------------------------
+
+5. test_get_movies
+   Verifica que el listado principal de películas funcione correctamente.
+
+6. test_get_movie_detail
+   Comprueba que el detalle de una película específica retorne datos válidos.
+
+7. test_search_movie
+   Valida la funcionalidad de búsqueda por texto.
+
+8. test_get_popular_movies
+   Verifica que el endpoint de películas populares responda correctamente.
+
+9. test_get_movie_platforms
+   Comprueba que una película devuelva las plataformas donde está disponible.
+
+10. test_movie_not_found
+    Valida el comportamiento ante un ID inexistente.
+
+11. test_movies_pagination
+    Comprueba que el endpoint soporte paginación.
+
+12. test_search_without_query
+    Verifica que la API maneje correctamente búsquedas sin parámetro.
+
+13. test_movies_results_structure
+    Confirma que cada película tenga "id" y "title".
+
+14. test_movie_id_is_integer
+    Valida que el id de película sea entero.
+
+15. test_popular_movies_not_empty
+    Verifica que el listado de populares no esté vacío.
+
+16. test_movie_platforms_structure_complete
+    Confirma que cada plataforma tenga id y nombre con tipos correctos.
+
+
+------------------------------------------------------------
+TESTS DE PLATAFORMAS
+------------------------------------------------------------
+
+17. test_get_platforms
+    Verifica que el listado de plataformas funcione correctamente.
+
+18. test_get_platform_catalog
+    Comprueba que el catálogo de una plataforma tenga la estructura esperada.
+
+19. test_platform_not_found
+    Valida el comportamiento ante una plataforma inexistente.
+
+20. test_platform_catalog_structure
+    Confirma que el catálogo devuelva una lista de nombres de películas.
+
+
+------------------------------------------------------------
+CONCLUSIÓN
+
+La suite de tests garantiza que la API:
+
+- Mantiene una estructura consistente
+- Maneja errores adecuadamente
+- Devuelve datos con tipos correctos
+- Soporta relaciones entre recursos
+- Funciona correctamente ante diferentes escenarios
+
+Estos tests permiten detectar errores rápidamente si el backend es modificado
+en el futuro.

@@ -20,7 +20,7 @@ export default function MovieDetail() {
 
         // obtener plataformas de streaming
         const providersRes = await axios.get(
-          `http://localhost:4000/api/movies/${id}/providers`
+          `http://localhost:4000/api/movies/${id}/platforms`
         );
         setProviders(providersRes.data || []);
       } catch (err) {

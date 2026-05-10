@@ -1,115 +1,106 @@
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import axios from "axios";
+import { getMovieById, getMoviePlatforms } from "../services/moviesService";
+
+const POSTER_BASE = "https://image.tmdb.org/t/p/w500";
+const LOGO_BASE = "https://image.tmdb.org/t/p/w92";
+const PLACEHOLDER = "https://placehold.co/300x450?text=Sin+imagen";
 
 export default function MovieDetail() {
   const { id } = useParams();
   const [movie, setMovie] = useState(null);
-  const [providers, setProviders] = useState([]); // nuevo estado
+  const [providers, setProviders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
   useEffect(() => {
-    const fetchMovieAndProviders = async () => {
+    const fetch = async () => {
       try {
-        // obtener info de la película
-        const movieRes = await axios.get(
-          `http://localhost:4000/api/movies/${id}`
-        );
+        const [movieRes, providersRes] = await Promise.all([
+          getMovieById(id),
+          getMoviePlatforms(id),
+        ]);
         setMovie(movieRes.data);
-
-        // obtener plataformas de streaming
-        const providersRes = await axios.get(
-          `http://localhost:4000/api/movies/${id}/platforms`
-        );
         setProviders(providersRes.data || []);
-      } catch (err) {
-        console.error(err);
+      } catch {
         setError("No se pudo cargar la película o sus plataformas.");
       } finally {
         setLoading(false);
       }
     };
-
-    fetchMovieAndProviders();
+    fetch();
   }, [id]);
 
-  if (loading) return <p>Cargando...</p>;
-  if (error) return <p>{error}</p>;
+  if (loading) return <p style={styles.centered}>Cargando...</p>;
+  if (error) return <p style={{ ...styles.centered, color: "red" }}>{error}</p>;
   if (!movie) return null;
 
-  const posterBase = "https://image.tmdb.org/t/p/w500";
-
   return (
-    <div style={{ padding: "20px", maxWidth: "800px", margin: "0 auto" }}>
-      <h1>
-        {movie.title} ({movie.release_date?.slice(0, 4)})
-      </h1>
+    <div style={styles.container}>
+      <div style={styles.hero}>
+        <img
+          src={movie.poster_path ? POSTER_BASE + movie.poster_path : PLACEHOLDER}
+          alt={movie.title}
+          style={styles.poster}
+        />
+        <div style={styles.info}>
+          <h1 style={styles.title}>
+            {movie.title}{" "}
+            <span style={styles.year}>({movie.release_date?.slice(0, 4)})</span>
+          </h1>
+          <p style={styles.rating}>⭐ {movie.vote_average?.toFixed(1)}</p>
+          <p style={styles.overview}>{movie.overview || "Sin descripción disponible."}</p>
 
-      <img
-        src={
-          movie.poster_path
-            ? posterBase + movie.poster_path
-            : "https://via.placeholder.com/400x600?text=Sin+imagen"
-        }
-        alt={movie.title}
-        style={{
-          width: "300px",
-          borderRadius: "10px",
-          marginTop: "20px",
-          boxShadow: "0 4px 10px rgba(0,0,0,0.3)",
-        }}
-      />
-
-      <p style={{ marginTop: "15px" }}>
-        {movie.overview || "Sin descripción disponible."}
-      </p>
-
-      <h3 style={{ marginTop: "30px" }}>Dónde verla</h3>
-
-      {providers.length > 0 ? (
-        <div
-          style={{
-            display: "flex",
-            gap: "15px",
-            justifyContent: "center",
-            flexWrap: "wrap",
-            marginTop: "10px",
-          }}
-        >
-          {providers.map((p) => (
-            <div
-              key={p.provider_name}
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-              }}
-            >
-              <img
-                src={`https://image.tmdb.org/t/p/w92${p.logo_path}`}
-                alt={p.provider_name}
-                title={p.provider_name}
-                style={{
-                  borderRadius: "8px",
-                  width: "60px",
-                  height: "60px",
-                  objectFit: "contain",
-                  backgroundColor: "white",
-                  padding: "5px",
-                }}
-              />
-              <span style={{ marginTop: "5px", fontSize: "14px" }}>
-                {p.provider_name}
-              </span>
+          <h3 style={styles.subtitle}>Dónde verla</h3>
+          {providers.length > 0 ? (
+            <div style={styles.providers}>
+              {providers.map((p) => (
+                <div key={p.provider_name} style={styles.providerItem}>
+                  <img
+                    src={`${LOGO_BASE}${p.logo_path}`}
+                    alt={p.provider_name}
+                    title={p.provider_name}
+                    style={styles.logo}
+                  />
+                  <span style={styles.providerName}>{p.provider_name}</span>
+                </div>
+              ))}
             </div>
-          ))}
+          ) : (
+            <p style={{ color: "#888" }}>No disponible en streaming para Argentina.</p>
+          )}
         </div>
-      ) : (
-        <p style={{ color: "gray" }}>
-          No hay plataformas disponibles para Argentina.
-        </p>
-      )}
+      </div>
     </div>
   );
 }
+
+const styles = {
+  centered: { textAlign: "center", marginTop: "40px" },
+  container: { padding: "24px", maxWidth: "900px", margin: "0 auto" },
+  hero: { display: "flex", gap: "32px", flexWrap: "wrap" },
+  poster: {
+    width: "260px",
+    borderRadius: "12px",
+    boxShadow: "0 6px 20px rgba(0,0,0,0.35)",
+    flexShrink: 0,
+  },
+  info: { flex: 1, minWidth: "240px" },
+  title: { fontSize: "1.8rem", margin: "0 0 8px" },
+  year: { color: "#888", fontWeight: "normal", fontSize: "1.2rem" },
+  rating: { fontSize: "1.1rem", margin: "0 0 16px" },
+  overview: { lineHeight: "1.7", color: "#444" },
+  subtitle: { marginTop: "28px", marginBottom: "12px" },
+  providers: { display: "flex", gap: "16px", flexWrap: "wrap" },
+  providerItem: { display: "flex", flexDirection: "column", alignItems: "center" },
+  logo: {
+    width: "60px",
+    height: "60px",
+    borderRadius: "10px",
+    objectFit: "contain",
+    backgroundColor: "#fff",
+    padding: "4px",
+    boxShadow: "0 2px 6px rgba(0,0,0,0.15)",
+  },
+  providerName: { marginTop: "6px", fontSize: "12px", color: "#555" },
+};

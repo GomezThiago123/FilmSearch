@@ -9,6 +9,13 @@ ENV/
 .venv/
 .venv/*
 
+# Python cache
+__pycache__/
+*.py[cod]
+
+# Variables de entorno con secretos
+backend/.env
+
 
 # Node modules (frontend y backend)
 node_modules/
